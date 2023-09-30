@@ -1,5 +1,6 @@
 //Justin Lugo
 //COP 3502, Fall 2020
+//NID: ju522019
 
 #include "Orcheeseo.h"
 #include <stdio.h>
@@ -18,10 +19,10 @@ void printOrcheeseo(char *str)
 {
   // The program takes in string as argument
   // Declaring variables
-  int i = 0, j = 0, n, numOreo = 0, numCream = 0, numGoldfish;
-  double oHeight, cHeight, gHeight, sumHeight;
+  int i = 0, j = 0, n, numOreo = 0, numCream = 0, numGoldfish = 0;
+  double oHeight, cHeight, gHeight = 0, sumHeight;
 
-  if (str == NULL)
+  if (str == NULL || str[0] == '\0')
   {
     // If the string is null or empty, we'll print this
     printf("No cookie. :(\n");
@@ -72,24 +73,14 @@ void printOrcheeseo(char *str)
         {
           numGoldfish++;
         }
+        gHeight += printGoldfish(numGoldfish);
         i--;
-        printGoldfish(numGoldfish);
+
+        //printf("%f", gHeight);
         // After we print the respective lines to correspond to the number of
         // goldfish, we have to give them heights so that the function can
         // determine whether it is edible and fits in our mouths once the
         // heights are added up
-        if (numGoldfish % 3 == 1)
-        {
-          gHeight = 0.1;
-        }
-        else if (numGoldfish % 3 == 2)
-        {
-          gHeight = 0.5;
-        }
-        else if (numGoldfish % 3 == 0)
-        {
-          gHeight = 0.25;
-        }
       }
     }
   }
@@ -99,19 +90,23 @@ void printOrcheeseo(char *str)
   oHeight = numOreo * 0.4;
   cHeight = numCream * 0.25;
   sumHeight = oHeight + cHeight + gHeight;
+  //printf("%d", numGoldfish);
  
-  if (str[0] != 'o')
+  // printf("%f", sumHeight);
+  if (str[0] != 'o' || str[n-1] != 'o')
   {
     // If our resulting snack doesn't have an oreo cookie part on the top,
     // it's too messy to eat.
     printf("Too messy. :(\n");
   }
+
+  /*
   else if (str[n-1] != 'o')
   {
     // If our resulting snack doesn't have an oreo cookie part on the bottom,
     // it's too messy to eat.
     printf("Too messy. :(\n");
-  }
+  }*/
   else if (numGoldfish == 0 && sumHeight <= 4.0)
   {
     // Sometimes, orcheeseos don't have goldfish. In that case we have a
@@ -137,40 +132,51 @@ double printGoldfish(int numGoldfish)
   // we now proceed to create loops that include modulo statements to determine
   // which line to print to represent the goldfish accurately per the
   // assignment PDF
+  double gHeight = 0, totalHeight;
   int originalNum = numGoldfish;
+
+  if (numGoldfish == 0)
+  {
+    return 0;
+  }
 
   while (numGoldfish != 0)
   {
     if (numGoldfish % 3 == 1)
     {
-      if (numGoldfish > 1)
+      if (originalNum == 1)
+      {
+        printf("  .,.,.,\n");
+        numGoldfish -= 1;
+        gHeight += 0.1;
+      }
+      else if (numGoldfish > 1)
       {
         while (numGoldfish > 4)
         {
           printf(" xoxoxoxo\n");
           numGoldfish -= 3;
+          gHeight += 0.25;
         }
         printf("xoxoxoxoxo\n");
         numGoldfish -= 4;
-      }
-      else if (originalNum == 1)
-      {
-        printf("  .,.,.,\n");
-        numGoldfish -= 1;
+        gHeight += 0.25;
       }
     }
-    if (numGoldfish % 3 == 0)
+    else if (numGoldfish % 3 == 0)
     {
       printf(" xoxoxoxo\n");
       numGoldfish -= 3;
+      gHeight += 0.25;
     }
     else if (numGoldfish % 3 == 2)
     {
       printf("  xoxoxo\n");
       numGoldfish -= 2;
+      gHeight += 0.25;
     }
   }
-  return numGoldfish;
+  return gHeight;
 }
 
 int returnThirtyTwo(void)
